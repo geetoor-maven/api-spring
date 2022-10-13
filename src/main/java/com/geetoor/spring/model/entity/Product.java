@@ -1,11 +1,20 @@
 package com.geetoor.spring.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_product")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Product implements Serializable {
 
     @Id
@@ -21,6 +30,18 @@ public class Product implements Serializable {
     private String description;
 
     private double price;
+
+    @ManyToOne
+    private Category category;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tbl_product_supplier",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "supplier_id")
+    )
+    //@JsonManagedReference
+    private Set<Supplier> suppliers;
 
     public Product() {
     }
@@ -62,5 +83,21 @@ public class Product implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Set<Supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(Set<Supplier> suppliers) {
+        this.suppliers = suppliers;
     }
 }

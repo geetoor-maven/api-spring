@@ -1,10 +1,10 @@
 package com.geetoor.spring.controller;
 
+import com.geetoor.spring.dto.CategoryData;
 import com.geetoor.spring.dto.ResponseData;
-import com.geetoor.spring.dto.SupplierData;
-import com.geetoor.spring.model.entity.Product;
-import com.geetoor.spring.model.entity.Supplier;
-import com.geetoor.spring.services.ProductService;
+import com.geetoor.spring.model.entity.Category;
+import com.geetoor.spring.services.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("api/products")
-public class ProductController {
+@RequestMapping("api/categories")
+public class CategoryController {
 
     @Autowired
-    private ProductService productService;
+    private CategoryService categoryService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<ResponseData<Product>> create(@Valid @RequestBody Product product, Errors errors){
-
-        ResponseData<Product> responseData = new ResponseData<>();
-
+    public ResponseEntity<ResponseData<Category>> save(@Valid @RequestBody CategoryData categoryData, Errors errors){
+        ResponseData<Category> responseData = new ResponseData<>();
         if (errors.hasErrors()){
             for (ObjectError error: errors.getAllErrors()){
                 responseData.getMessages().add(error.getDefaultMessage());
@@ -34,26 +35,25 @@ public class ProductController {
             responseData.setPayload(null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+        Category category = modelMapper.map(categoryData, Category.class);
         responseData.setStatus(true);
-        responseData.setPayload(productService.save(product));
+        responseData.setPayload(categoryService.save(category));
         return ResponseEntity.ok(responseData);
     }
 
     @GetMapping
-    public Iterable<Product> findAll(){
-        return productService.findAll();
+    public Iterable<Category> findAll(){
+        return categoryService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Product findOne(@PathVariable("id") Long id){
-        return productService.findOne(id);
+    public Category findOne(Long id){
+        return categoryService.findOne(id);
     }
 
     @PutMapping
-    public ResponseEntity<ResponseData<Product>> update(@Valid @RequestBody Product product, Errors errors){
-
-        ResponseData<Product> responseData = new ResponseData<>();
-
+    public ResponseEntity<ResponseData<Category>> update(@Valid @RequestBody CategoryData categoryData, Errors errors){
+        ResponseData<Category> responseData = new ResponseData<>();
         if (errors.hasErrors()){
             for (ObjectError error: errors.getAllErrors()){
                 responseData.getMessages().add(error.getDefaultMessage());
@@ -62,19 +62,10 @@ public class ProductController {
             responseData.setPayload(null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
+        Category category = modelMapper.map(categoryData, Category.class);
         responseData.setStatus(true);
-        responseData.setPayload(productService.save(product));
+        responseData.setPayload(categoryService.save(category));
         return ResponseEntity.ok(responseData);
-    }
-
-    @DeleteMapping("/{id}")
-    public void removeOne(@PathVariable("id") Long id){
-        productService.removeOne(id);
-    }
-
-    @PostMapping("/{id}")
-    public void addSupplier(@RequestBody Supplier supplier, @PathVariable("id") Long productId){
-        productService.addSupplier(supplier, productId);
     }
 
 }

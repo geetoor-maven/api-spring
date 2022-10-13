@@ -1,6 +1,7 @@
 package com.geetoor.spring.services;
 
 import com.geetoor.spring.model.entity.Product;
+import com.geetoor.spring.model.entity.Supplier;
 import com.geetoor.spring.model.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,4 +42,12 @@ public class ProductService {
         return productRepo.findByNameContains(name);
     }
 
+    public void addSupplier(Supplier supplier, Long productId){
+        Product product = findOne(productId);
+        if (product == null){
+            throw new RuntimeException("Product with id : " + productId + "not found");
+        }
+        product.getSuppliers().add(supplier);
+        save(product);
+    }
 }

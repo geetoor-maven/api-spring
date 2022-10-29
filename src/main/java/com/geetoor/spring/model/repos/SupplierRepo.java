@@ -1,5 +1,6 @@
 package com.geetoor.spring.model.repos;
 
+import com.geetoor.spring.dto.SearchData;
 import com.geetoor.spring.model.entity.Supplier;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,4 +13,6 @@ public interface SupplierRepo extends CrudRepository<Supplier, Long> {
     List<Supplier> findByNameContains(String name);
 
     List<Supplier> findByNameStartingWith(String prefix);
+
+    List<Supplier> findByNameContainsOrEmailContains(String name, String email);
 }

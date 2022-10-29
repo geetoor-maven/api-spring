@@ -42,4 +42,11 @@ public class SupplierService {
         return supplierRepo.findByEmail(email);
     }
 
+    public List<Supplier> findByName(String name){
+        return supplierRepo.findByNameContains(name);
+    }
+
+    public List<Supplier> findByNameStartWith(String prefix){
+        return supplierRepo.findByNameContains(prefix);
+    }
 }

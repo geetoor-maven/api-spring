@@ -14,6 +14,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/suppliers")
@@ -74,4 +75,13 @@ public class SupplierController {
         return supplierService.findByEmail(searchData.getSearchKey());
     }
 
+    @PostMapping("/search/byname")
+    public List<Supplier> findByName(@RequestBody SearchData searchData){
+        return supplierService.findByName(searchData.getSearchKey());
+    }
+
+    @PostMapping("/search/namestartwith")
+    public List<Supplier> findByNameStartWith(@RequestBody SearchData searchData){
+        return supplierService.findByNameStartWith(searchData.getSearchKey());
+    }
 }

@@ -1,6 +1,7 @@
 package com.geetoor.spring.controller;
 
 import com.geetoor.spring.dto.ResponseData;
+import com.geetoor.spring.dto.SearchData;
 import com.geetoor.spring.dto.SupplierData;
 import com.geetoor.spring.model.entity.Supplier;
 import com.geetoor.spring.services.SupplierService;
@@ -66,6 +67,11 @@ public class SupplierController {
         responseData.setStatus(true);
         responseData.setPayload(supplierService.save(supplier));
         return ResponseEntity.ok(responseData);
+    }
+
+    @PostMapping("/search/byemail")
+    public Supplier findByEmail(@RequestBody SearchData searchData){
+        return supplierService.findByEmail(searchData.getSearchKey());
     }
 
 }

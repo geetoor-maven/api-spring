@@ -37,4 +37,21 @@ public class SupplierService {
         supplierRepo.deleteById(id);
     }
 
+
+    public Supplier findByEmail(String email){
+        return supplierRepo.findByEmail(email);
+    }
+
+    public List<Supplier> findByName(String name){
+        return supplierRepo.findByNameContains(name);
+    }
+
+    public List<Supplier> findByNameStartWith(String prefix){
+        return supplierRepo.findByNameStartingWith(prefix);
+    }
+
+    public List<Supplier> findByNameContainsOrEmailContains(String name, String email){
+        return supplierRepo.findByNameContainsOrEmailContains(name, email);
+    }
+
 }
